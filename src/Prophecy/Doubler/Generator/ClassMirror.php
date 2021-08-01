@@ -151,6 +151,10 @@ class ClassMirror
             $returnTypes = $this->getTypeHints($method->getReturnType(), $method->getDeclaringClass(), $method->getReturnType()->allowsNull());
             $node->setReturnTypeNode(new ReturnTypeNode(...$returnTypes));
         }
+        elseif (method_exists($method, 'hasTentativeReturnType') && $method->hasTentativeReturnType()) {
+            $returnTypes = $this->getTypeHints($method->getTentativeReturnType(), $method->getDeclaringClass(), $method->getTentativeReturnType()->allowsNull());
+            $node->setReturnTypeNode(new ReturnTypeNode(...$returnTypes));
+        }
 
         if (is_array($params = $method->getParameters()) && count($params)) {
             foreach ($params as $param) {
